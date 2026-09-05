@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://table-expressive-therapies-inc.true-stork-0509.chatgpt.site'),
+  metadataBase: new URL('https://table-expressive-therapies-inc.jason-hou.chatgpt.site'),
   title: 'Table Expressive Therapies, Inc. | 臺波波表達性治療',
   description: 'Promoting healing and well-being through expressive arts-based and culturally responsive therapeutic practice.',
   openGraph: {
