@@ -436,7 +436,11 @@ export default function Home() {
     [editableContent],
   );
   const customStories = useMemo(() => mapCustomStories(editableContent), [editableContent]);
-  const allStories = sortStories([...liveStories, ...customStories, ...archiveStories]);
+  const allStories = useMemo(
+    () => sortStories([...liveStories, ...customStories, ...archiveStories]),
+    [liveStories, customStories, archiveStories],
+  );
+  const latestStories = allStories.slice(0, 2);
   const activityStory = useMemo(() => ({
     ...liveStories[5],
     eyebrow: pageCopy.activityEyebrow,
@@ -475,11 +479,26 @@ export default function Home() {
       .catch(() => setEditableContent({}));
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    fetch('/archive-data.json')
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Archive unavailable')))
+      .then((entries: ArchiveEntry[]) => {
+        if (active) setArchiveStories(mapArchive(entries));
+      })
+      .catch(() => undefined);
+    return () => { active = false; };
+  }, []);
+
   const scrollRail = (direction: number) => {
     railRef.current?.scrollBy({ left: direction * Math.min(420, window.innerWidth * .82), behavior: 'smooth' });
   };
 
   const loadArchive = async () => {
+    if (archiveStories.length > 0) {
+      setShowAll(true);
+      return;
+    }
     setArchiveStatus('loading');
     try {
       const response = await fetch('/archive-data.json');
@@ -550,8 +569,8 @@ export default function Home() {
           <p>{pageCopy.storiesIntroZh}</p>
         </div>
         <div className="feature-grid">
-          <StoryCard story={liveStories[0]} size="large" />
-          <StoryCard story={liveStories[1]} />
+          <StoryCard story={latestStories[0]} size="large" />
+          <StoryCard story={latestStories[1]} />
         </div>
       </section>
 
