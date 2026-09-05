@@ -78,7 +78,7 @@ const pageDefaults: PageCopy = {
   teamTitle: 'Six therapists.\nMany ways to connect.',
   teamZh: '我們是六位來自台灣、畢業於麻州 Lesley University 的表達性治療師，專長涵蓋藝術治療、音樂治療、戲劇治療、舞蹈／動作治療，以及表達性藝術治療。',
   teamEn: 'We create culturally responsive programs that support self-care and whole-person well-being, especially for Asian and immigrant communities.',
-  teamImage: '/images/who-we-are.png',
+  teamImage: '/images/who-we-are-v2.png',
   footerEn: 'There is a place for your story here.',
   footerZh: '有合作想法、活動邀請，或只是想和我們打聲招呼？',
 };
