@@ -54,6 +54,12 @@ type PageCopy = {
   activityDetails: string;
   activityBody: string;
   activityImage: string;
+  pastActivityEyebrow: string;
+  pastActivityTitle: string;
+  pastActivityZh: string;
+  pastActivityDetails: string;
+  pastActivityBody: string;
+  pastActivityImage: string;
   teamTitle: string;
   teamZh: string;
   teamEn: string;
@@ -255,6 +261,12 @@ const pageDefaults: PageCopy = {
   activityDetails: 'JUNE 7, 2026 · BOSTON · FREE & BILINGUAL',
   activityBody: 'Families and neighbors created miniature homes, shaped a shared city, and found new ways to connect through play. This all-ages gathering made room for art, conversation, teamwork, and a collective sense of belonging.',
   activityImage: '/images/activity-block-party.jpg',
+  pastActivityEyebrow: 'PAST ACTIVITY · 2025 ARCHIVE',
+  pastActivityTitle: 'The Power of Play: Eggy Block Party',
+  pastActivityZh: '和 Eggy 一起找回玩心，創作自己的小小蛋守護者',
+  pastActivityDetails: 'SEPTEMBER 14, 2025 · BOSTON · COMMUNITY BLOCK PARTY',
+  pastActivityBody: 'At this playful community gathering, participants made their own little Eggy guardians and rediscovered how curiosity, silliness, and hands-on art can help us learn, grow, and connect with the world around us.',
+  pastActivityImage: '/images/archive/DOmYmikibkR.jpg',
   teamTitle: 'Six therapists.\nMany ways to connect.',
   teamZh: '我們是六位來自台灣、畢業於麻州 Lesley University 的表達性治療師，專長涵蓋藝術治療、音樂治療、戲劇治療、舞蹈／動作治療，以及表達性藝術治療。',
   teamEn: 'We create culturally responsive programs that support self-care and whole-person well-being, especially for Asian and immigrant communities.',
@@ -434,6 +446,24 @@ export default function Home() {
     image: pageCopy.activityImage,
     body: [pageCopy.activityBody, liveStories[5].body[1]],
   }), [liveStories, pageCopy]);
+  const pastActivityStory = useMemo<Story>(() => ({
+    slug: 'eggy-block-party-2025',
+    date: 'SEPTEMBER 14',
+    year: '2025',
+    eyebrow: pageCopy.pastActivityEyebrow,
+    title: pageCopy.pastActivityTitle,
+    zh: pageCopy.pastActivityZh,
+    excerpt: pageCopy.pastActivityBody,
+    image: pageCopy.pastActivityImage,
+    tone: 'sage',
+    body: [
+      pageCopy.pastActivityBody,
+      '身為表達性治療師，我們深信「玩」的力量。玩耍是學習、成長，以及與環境建立連結最自然的方式之一。希望每次看見自己的小小蛋守護者，都能提醒我們保留一顆願意玩耍、充滿好奇的心。',
+      'As expressive therapists, we believe deeply in the power of play. We hope each little Eggy guardian can be a reminder to keep curiosity, imagination, and a playful spirit alive.',
+    ],
+    sources: [{ label: 'View the 2025 activity on Instagram', href: 'https://www.instagram.com/etableble/p/DOmYmikibkR/?img_index=1' }],
+    published: '2025-09-14T22:40:20.000Z',
+  }), [pageCopy]);
 
   useEffect(() => {
     fetch('/api/content')
@@ -593,6 +623,19 @@ export default function Home() {
             <p className="activity-details">{pageCopy.activityDetails}</p>
             <p className="activity-body">{pageCopy.activityBody}</p>
             <StoryDialog story={activityStory}>
+              <span className="activity-read">Read activity note <ArrowUpRight size={17} /></span>
+            </StoryDialog>
+          </div>
+        </div>
+        <div className="activity-card activity-card-past">
+          <figure className="activity-poster"><img src={pageCopy.pastActivityImage} alt={pageCopy.pastActivityTitle} /></figure>
+          <div className="activity-copy">
+            <p className="kicker">{pageCopy.pastActivityEyebrow}</p>
+            <h3>{pageCopy.pastActivityTitle}</h3>
+            <p className="activity-zh">{pageCopy.pastActivityZh}</p>
+            <p className="activity-details">{pageCopy.pastActivityDetails}</p>
+            <p className="activity-body">{pageCopy.pastActivityBody}</p>
+            <StoryDialog story={pastActivityStory}>
               <span className="activity-read">Read activity note <ArrowUpRight size={17} /></span>
             </StoryDialog>
           </div>

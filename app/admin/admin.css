@@ -17,6 +17,7 @@ body { background: var(--admin-paper); }
 .admin-card-intro h2 { margin: 0; font: 400 clamp(38px,4vw,58px)/1 Georgia,serif; letter-spacing: -.035em; }
 .admin-card-intro > p:last-child { margin-top: 22px; max-width: 340px; color: #746b67; line-height: 1.7; }
 .admin-fields { display: flex; flex-direction: column; gap: 23px; }
+.admin-subheading { margin: 12px 0 -3px; padding-top: 28px; border-top: 1px solid var(--admin-line); font: 600 12px/1.4 Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; }
 .admin-fields label { display: flex; flex-direction: column; gap: 9px; font-size: 11px; letter-spacing: .08em; }
 .admin-fields input,.admin-fields textarea,.admin-fields select { width: 100%; border: 1px solid var(--admin-line); border-radius: 0; background: rgba(255,255,255,.4); color: inherit; padding: 14px 16px; font: 15px/1.55 Arial,"PingFang TC",sans-serif; outline: none; }
 .admin-fields input:focus,.admin-fields textarea:focus,.admin-fields select:focus { border-color: #9d554b; box-shadow: 0 0 0 3px rgba(157,85,75,.1); }

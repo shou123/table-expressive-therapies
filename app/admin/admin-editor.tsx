@@ -26,6 +26,12 @@ type PageCopy = {
   activityDetails: string;
   activityBody: string;
   activityImage: string;
+  pastActivityEyebrow: string;
+  pastActivityTitle: string;
+  pastActivityZh: string;
+  pastActivityDetails: string;
+  pastActivityBody: string;
+  pastActivityImage: string;
   teamTitle: string;
   teamZh: string;
   teamEn: string;
@@ -63,6 +69,12 @@ const pageDefaults: PageCopy = {
   activityDetails: 'JUNE 7, 2026 · BOSTON · FREE & BILINGUAL',
   activityBody: 'Families and neighbors created miniature homes, shaped a shared city, and found new ways to connect through play. This all-ages gathering made room for art, conversation, teamwork, and a collective sense of belonging.',
   activityImage: '/images/activity-block-party.jpg',
+  pastActivityEyebrow: 'PAST ACTIVITY · 2025 ARCHIVE',
+  pastActivityTitle: 'The Power of Play: Eggy Block Party',
+  pastActivityZh: '和 Eggy 一起找回玩心，創作自己的小小蛋守護者',
+  pastActivityDetails: 'SEPTEMBER 14, 2025 · BOSTON · COMMUNITY BLOCK PARTY',
+  pastActivityBody: 'At this playful community gathering, participants made their own little Eggy guardians and rediscovered how curiosity, silliness, and hands-on art can help us learn, grow, and connect with the world around us.',
+  pastActivityImage: '/images/archive/DOmYmikibkR.jpg',
   teamTitle: 'Six therapists.\nMany ways to connect.',
   teamZh: '我們是六位來自台灣、畢業於麻州 Lesley University 的表達性治療師，專長涵蓋藝術治療、音樂治療、戲劇治療、舞蹈／動作治療，以及表達性藝術治療。',
   teamEn: 'We create culturally responsive programs that support self-care and whole-person well-being, especially for Asian and immigrant communities.',
@@ -264,6 +276,15 @@ export default function AdminEditor({
           <label><span>Image path</span><input value={pageCopy.activityImage} onChange={(event) => setPageCopy({ ...pageCopy, activityImage: event.target.value })} /></label>
           <label className="admin-upload"><ImagePlus size={18} /><span>Upload original activity image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={(event) => upload(event.target.files?.[0], (url) => setPageCopy((current) => ({ ...current, activityImage: url })))} /></span><small>JPG, PNG, WebP or GIF · up to 8 MB</small></label>
           {pageCopy.activityImage && <img className="admin-preview" src={pageCopy.activityImage} alt="Activity preview" />}
+          <h3 className="admin-subheading">Past activity · 2025 archive</h3>
+          <label><span>Category line</span><input value={pageCopy.pastActivityEyebrow} onChange={(event) => setPageCopy({ ...pageCopy, pastActivityEyebrow: event.target.value })} /></label>
+          <label><span>English title</span><input value={pageCopy.pastActivityTitle} onChange={(event) => setPageCopy({ ...pageCopy, pastActivityTitle: event.target.value })} /></label>
+          <label><span>Chinese title</span><input value={pageCopy.pastActivityZh} onChange={(event) => setPageCopy({ ...pageCopy, pastActivityZh: event.target.value })} /></label>
+          <label><span>Date and activity details</span><input value={pageCopy.pastActivityDetails} onChange={(event) => setPageCopy({ ...pageCopy, pastActivityDetails: event.target.value })} /></label>
+          <label><span>Activity introduction</span><textarea value={pageCopy.pastActivityBody} onChange={(event) => setPageCopy({ ...pageCopy, pastActivityBody: event.target.value })} /></label>
+          <label><span>Image path</span><input value={pageCopy.pastActivityImage} onChange={(event) => setPageCopy({ ...pageCopy, pastActivityImage: event.target.value })} /></label>
+          <label className="admin-upload"><ImagePlus size={18} /><span>Upload past activity image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={(event) => upload(event.target.files?.[0], (url) => setPageCopy((current) => ({ ...current, pastActivityImage: url })))} /></span><small>JPG, PNG, WebP or GIF · up to 8 MB</small></label>
+          {pageCopy.pastActivityImage && <img className="admin-preview" src={pageCopy.pastActivityImage} alt="Past activity preview" />}
           <button className="admin-primary" type="button" disabled={busy} onClick={() => save('page', pageCopy)}><Save size={16} /> Save activity</button>
         </div>
       </section>
