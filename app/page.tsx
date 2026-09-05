@@ -270,7 +270,7 @@ const pageDefaults: PageCopy = {
   teamTitle: 'Six therapists.\nMany ways to connect.',
   teamZh: '我們是六位來自台灣、畢業於麻州 Lesley University 的表達性治療師，專長涵蓋藝術治療、音樂治療、戲劇治療、舞蹈／動作治療，以及表達性藝術治療。',
   teamEn: 'We create culturally responsive programs that support self-care and whole-person well-being, especially for Asian and immigrant communities.',
-  teamImage: '/images/who-we-are.png',
+  teamImage: '/images/who-we-are-v2.png',
   footerEn: 'There is a place for your story here.',
   footerZh: '有合作想法、活動邀請，或只是想和我們打聲招呼？',
 };
@@ -376,11 +376,7 @@ function StoryDialog({ story, children }: { story: Story; children: React.ReactN
       <DialogTrigger render={<button type="button" className="story-trigger" aria-label={`Read ${story.title}`} />}>{children}</DialogTrigger>
       <DialogContent className="story-dialog" showCloseButton initialFocus={dialogStartRef}>
         <div className={`dialog-visual tone-${story.tone}`} ref={dialogStartRef} tabIndex={-1}>
-          <div
-            className="dialog-art"
-            aria-hidden="true"
-            style={{ backgroundImage: `url(${JSON.stringify(story.image)})` }}
-          />
+          <img className="dialog-art" src={story.image} alt="" aria-hidden="true" />
           <span>{story.date}<br />{story.year}</span>
         </div>
         <div className="dialog-copy">
