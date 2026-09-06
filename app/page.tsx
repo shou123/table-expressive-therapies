@@ -675,7 +675,10 @@ export default function Home() {
           <a href="mailto:tableexpressivetherapy@gmail.com">tableexpressivetherapy@gmail.com <ArrowUpRight size={16} /></a>
           <div><a href="https://www.instagram.com/etableble/" target="_blank" rel="noreferrer">Instagram</a><a href="https://www.facebook.com/TableExpressiveTherapies/" target="_blank" rel="noreferrer">Facebook</a><a href="/admin">Admin</a></div>
         </div>
-        <p className="copyright">© {new Date().getFullYear()} TABLE EXPRESSIVE THERAPIES, INC. · BOSTON, MA</p>
+        <div className="footer-bottom">
+          <p className="copyright">© {new Date().getFullYear()} TABLE EXPRESSIVE THERAPIES, INC. · BOSTON, MA</p>
+          <a className="go-top" href="#top" aria-label="Go to the top of the page">GO TO TOP <ChevronUp size={16} /></a>
+        </div>
       </footer>
     </main>
   );
