@@ -270,13 +270,13 @@ const pageDefaults: PageCopy = {
   teamTitle: 'Six therapists.\nMany ways to connect.',
   teamZh: '我們是六位來自台灣、畢業於麻州 Lesley University 的表達性治療師，專長涵蓋藝術治療、音樂治療、戲劇治療、舞蹈／動作治療，以及表達性藝術治療。',
   teamEn: 'We create culturally responsive programs that support self-care and whole-person well-being, especially for Asian and immigrant communities.',
-  teamImage: '/images/who-we-are-v3.png',
+  teamImage: '/images/team-plushie-group-v2.png',
   footerEn: 'There is a place for your story here.',
   footerZh: '有合作想法、活動邀請，或只是想和我們打聲招呼？',
 };
 
 const curatedSourceUrls = new Set(stories.flatMap((story) => story.sources.map((source) => source.href)));
-const TOTAL_STORIES = 121;
+const TOTAL_STORIES = 124;
 
 function mapArchive(entries: ArchiveEntry[]) {
   return entries
@@ -406,7 +406,7 @@ function StoryCard({ story, size = 'regular' }: { story: Story; size?: 'large' |
           <span className="image-orbit" aria-hidden="true">Read</span>
         </span>
         <span className="story-meta"><span>{story.eyebrow}</span><time>{story.date} · {story.year}</time></span>
-        <span className="story-title">{story.title}</span>
+        <span className={`story-title ${titleSizeClass(story.title)}`}>{story.title}</span>
         <span className="story-zh">{story.zh}</span>
         {size !== 'compact' && <span className="story-excerpt">{story.excerpt}</span>}
       </StoryDialog>
@@ -484,6 +484,26 @@ export default function Home() {
       })
       .catch(() => undefined);
     return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    const sessionKey = 'table:visitor-location:v1';
+    try {
+      if (window.sessionStorage.getItem(sessionKey)) return;
+    } catch {
+      // Tracking remains optional when browser storage is unavailable.
+    }
+
+    fetch('/api/analytics/visit', { method: 'POST', keepalive: true })
+      .then((response) => {
+        if (!response.ok) return;
+        try {
+          window.sessionStorage.setItem(sessionKey, '1');
+        } catch {
+          // The aggregate visit was recorded even if browser storage is unavailable.
+        }
+      })
+      .catch(() => undefined);
   }, []);
 
   const scrollRail = (direction: number) => {

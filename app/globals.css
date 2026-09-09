@@ -97,6 +97,9 @@ img { max-width: 100%; filter: none !important; mix-blend-mode: normal !importan
 .story-meta time { color: var(--muted); letter-spacing: .04em; }
 .story-title { margin: 22px 0 8px; font: 400 clamp(26px, 2.8vw, 46px)/1.04 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
 .story-regular .story-title { font-size: clamp(25px, 2.3vw, 34px); }
+.story-title.title-medium { font-size: clamp(24px, 2.35vw, 38px); line-height: 1.1; }
+.story-title.title-long { font-size: clamp(21px, 1.9vw, 31px); line-height: 1.16; }
+.story-title.title-xlong { font-size: clamp(18px, 1.55vw, 26px); line-height: 1.23; }
 .story-zh { color: var(--ink); font: 400 16px/1.68 Georgia, "Noto Serif TC", serif; }
 .story-excerpt { margin-top: 12px; color: var(--muted); font-size: 15px; line-height: 1.75; }
 
