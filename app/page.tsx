@@ -479,31 +479,12 @@ export default function Home() {
     let active = true;
     fetch('/archive-data.json')
       .then((response) => response.ok ? response.json() : Promise.reject(new Error('Archive unavailable')))
-      .then((entries: ArchiveEntry[]) => {
+      .then((value) => {
+        const entries = value as ArchiveEntry[];
         if (active) setArchiveStories(mapArchive(entries));
       })
       .catch(() => undefined);
     return () => { active = false; };
-  }, []);
-
-  useEffect(() => {
-    const sessionKey = 'table:visitor-location:v1';
-    try {
-      if (window.sessionStorage.getItem(sessionKey)) return;
-    } catch {
-      // Tracking remains optional when browser storage is unavailable.
-    }
-
-    fetch('/api/analytics/visit', { method: 'POST', keepalive: true })
-      .then((response) => {
-        if (!response.ok) return;
-        try {
-          window.sessionStorage.setItem(sessionKey, '1');
-        } catch {
-          // The aggregate visit was recorded even if browser storage is unavailable.
-        }
-      })
-      .catch(() => undefined);
   }, []);
 
   const scrollRail = (direction: number) => {
@@ -530,6 +511,9 @@ export default function Home() {
 
   return (
     <main>
+      <span className="mapmyvisitors-beacon" aria-hidden="true">
+        <img src="https://mapmyvisitors.com/map.png?d=FNuwgesK0Y9tfi6mq_UMfzHqA0GCN5znxkOvVDiMGh4&cl=ffffff" alt="" />
+      </span>
       <nav className="site-nav" aria-label="Main navigation">
         <a className="wordmark" href="#top" aria-label="Table Expressive Therapies home">
           <span className="wordmark-cn">臺波波</span><span>TABLE</span><small>EXPRESSIVE THERAPIES</small>

@@ -2,9 +2,8 @@
 /* oxlint-disable next/no-img-element, next/no-html-link-for-pages */
 
 import { useMemo, useState } from 'react';
-import { ArrowUpRight, Check, Globe2, ImagePlus, LoaderCircle, MapPin, Plus, RefreshCw, Save } from 'lucide-react';
+import { ArrowUpRight, Check, ImagePlus, LoaderCircle, Plus, Save } from 'lucide-react';
 import type { ChatGPTUser } from '@/app/chatgpt-auth';
-import type { VisitorAnalytics, VisitorLocation } from '@/db/analytics';
 
 type ContentRow = {
   key: string;
@@ -120,27 +119,13 @@ function storyFromPayload(payload?: Record<string, unknown>): StoryDraft {
   };
 }
 
-function locationLabel(location: VisitorLocation) {
-  return [location.cityName, location.regionName, location.countryName].filter(Boolean).join(', ');
-}
-
-function mapPosition(location: VisitorLocation) {
-  if (location.latitude === null || location.longitude === null) return null;
-  return {
-    left: `${((location.longitude + 180) / 360) * 100}%`,
-    top: `${((90 - location.latitude) / 180) * 100}%`,
-  };
-}
-
 export default function AdminEditor({
   user,
   initialRows,
-  initialAnalytics,
   signOutPath,
 }: {
   user: ChatGPTUser;
   initialRows: ContentRow[];
-  initialAnalytics: VisitorAnalytics;
   signOutPath: string;
 }) {
   const initialContent = useMemo(
@@ -154,23 +139,8 @@ export default function AdminEditor({
     Object.fromEntries(curatedStories.map(([slug]) => [slug, storyFromPayload(initialContent[`story:${slug}`])])),
   );
   const [newStory, setNewStory] = useState<NewStoryDraft>(emptyNewStory);
-  const [analytics, setAnalytics] = useState(initialAnalytics);
-  const [analyticsStatus, setAnalyticsStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [status, setStatus] = useState('Ready');
   const [busy, setBusy] = useState(false);
-
-  const refreshAnalytics = async () => {
-    setAnalyticsStatus('loading');
-    try {
-      const response = await fetch('/api/admin/analytics', { cache: 'no-store' });
-      const result = await response.json() as { analytics?: VisitorAnalytics; error?: string };
-      if (!response.ok || !result.analytics) throw new Error(result.error ?? 'Unable to refresh visitor map');
-      setAnalytics(result.analytics);
-      setAnalyticsStatus('idle');
-    } catch {
-      setAnalyticsStatus('error');
-    }
-  };
 
   const save = async (key: string, payload: Record<string, unknown>) => {
     setBusy(true);
@@ -259,65 +229,6 @@ export default function AdminEditor({
         {busy ? <LoaderCircle size={15} className="admin-spin" /> : <Check size={15} />}
         <span>{status}</span>
       </div>
-
-      <section className="admin-card admin-analytics-card">
-        <div className="admin-card-intro">
-          <p className="admin-number">LIVE</p>
-          <h2>Visitor map</h2>
-          <p>See the approximate parts of the world visiting Table. Locations are combined into totals, without storing IP addresses.</p>
-          <button className="analytics-refresh" type="button" onClick={refreshAnalytics} disabled={analyticsStatus === 'loading'}>
-            <RefreshCw size={15} className={analyticsStatus === 'loading' ? 'admin-spin' : undefined} />
-            {analyticsStatus === 'loading' ? 'Refreshing…' : 'Refresh map'}
-          </button>
-          {analyticsStatus === 'error' && <p className="analytics-error">The map could not refresh. Please try again.</p>}
-        </div>
-        <div className="analytics-dashboard">
-          <div className="analytics-stats" aria-label="Visitor totals">
-            <div className="analytics-stat"><Globe2 size={18} /><strong>{analytics.totalVisits.toLocaleString()}</strong><span>visitor sessions</span></div>
-            <div className="analytics-stat"><span className="analytics-stat-symbol">◎</span><strong>{analytics.countries.toLocaleString()}</strong><span>countries</span></div>
-            <div className="analytics-stat"><MapPin size={18} /><strong>{analytics.locations.toLocaleString()}</strong><span>locations</span></div>
-          </div>
-
-          <div className="visitor-map-wrap">
-            <div className="visitor-map" aria-label="World map showing approximate visitor locations">
-              <img src="/images/world-map-equirectangular.svg" alt="World map" />
-              {analytics.locationRows.map((location) => {
-                const position = mapPosition(location);
-                if (!position) return null;
-                const size = Math.min(30, 10 + Math.log2(location.visits + 1) * 4);
-                return (
-                  <span
-                    className="visitor-dot"
-                    key={location.key}
-                    style={{ ...position, width: size, height: size }}
-                    title={`${locationLabel(location)} · ${location.visits.toLocaleString()} session${location.visits === 1 ? '' : 's'}`}
-                    aria-label={`${locationLabel(location)}, ${location.visits} visitor sessions`}
-                  />
-                );
-              })}
-              {analytics.locationRows.length === 0 && (
-                <div className="visitor-map-empty"><MapPin size={20} /><span>The map is ready.<br />New visits will appear here.</span></div>
-              )}
-            </div>
-          </div>
-
-          <div className="visitor-list-heading">
-            <div><p className="admin-kicker">TOP LOCATIONS · 主要來訪地</p><h3>Where visitors gather</h3></div>
-            <time dateTime={analytics.generatedAt}>Updated {new Date(analytics.generatedAt).toLocaleString()}</time>
-          </div>
-          <div className="visitor-list">
-            {analytics.locationRows.slice(0, 8).map((location, index) => (
-              <div className="visitor-row" key={location.key}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{locationLabel(location)}</strong>
-                <em>{location.visits.toLocaleString()} session{location.visits === 1 ? '' : 's'}</em>
-              </div>
-            ))}
-            {analytics.locationRows.length === 0 && <p className="visitor-list-empty">No visits have been recorded yet. Data begins collecting after this version is published.</p>}
-          </div>
-          <p className="analytics-note">Approximate city-level location is supplied by the hosting network. Table stores only combined location totals—never IP addresses or individual visitor identities.</p>
-        </div>
-      </section>
 
       <section className="admin-card">
         <div className="admin-card-intro">
@@ -437,6 +348,23 @@ export default function AdminEditor({
           <label className="admin-upload"><ImagePlus size={18} /><span>Upload the new story image<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={(event) => upload(event.target.files?.[0], (url) => setNewStory((current) => ({ ...current, image: url })))} /></span><small>JPG, PNG, WebP or GIF · up to 8 MB</small></label>
           {newStory.image && <img className="admin-preview" src={newStory.image} alt="New story preview" />}
           <button className="admin-primary" type="button" disabled={busy} onClick={publishNewStory}><Plus size={16} /> Publish new story</button>
+        </div>
+      </section>
+
+      <section className="admin-card mapmyvisitors-card">
+        <div className="admin-card-intro">
+          <p className="admin-number">VISITORS</p>
+          <h2>Visitor map</h2>
+          <p>See the approximate parts of the world visiting Table through MapMyVisitors.</p>
+          <a className="mapmyvisitors-link" href="https://mapmyvisitors.com/web/1c84x" target="_blank" rel="noreferrer">
+            Open full analytics <ArrowUpRight size={15} />
+          </a>
+        </div>
+        <div className="mapmyvisitors-panel">
+          <a href="https://mapmyvisitors.com/web/1c84x" target="_blank" rel="noreferrer" title="Open full visitor analytics">
+            <img src="https://mapmyvisitors.com/map.png?d=FNuwgesK0Y9tfi6mq_UMfzHqA0GCN5znxkOvVDiMGh4&cl=ffffff" alt="Map showing approximate locations of website visitors" />
+          </a>
+          <p>Powered by MapMyVisitors · Data begins with this integration.</p>
         </div>
       </section>
 

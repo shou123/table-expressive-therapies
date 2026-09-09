@@ -1,6 +1,5 @@
 /* oxlint-disable next/no-html-link-for-pages */
 import { chatGPTSignOutPath, requireChatGPTUser } from '@/app/chatgpt-auth';
-import { getVisitorAnalytics } from '@/db/analytics';
 import { getAllContent } from '@/db/content';
 import { isAdminUser } from '@/lib/admin-auth';
 import AdminEditor from './admin-editor';
@@ -25,6 +24,6 @@ export default async function AdminPage() {
     );
   }
 
-  const [rows, analytics] = await Promise.all([getAllContent(), getVisitorAnalytics()]);
-  return <AdminEditor user={user} initialRows={rows} initialAnalytics={analytics} signOutPath={chatGPTSignOutPath('/')} />;
+  const rows = await getAllContent();
+  return <AdminEditor user={user} initialRows={rows} signOutPath={chatGPTSignOutPath('/')} />;
 }
