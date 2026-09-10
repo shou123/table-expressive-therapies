@@ -361,9 +361,13 @@ export default function AdminEditor({
           </a>
         </div>
         <div className="mapmyvisitors-panel">
-          <a href="https://mapmyvisitors.com/web/1c84x" target="_blank" rel="noreferrer" title="Open full visitor analytics">
-            <img src="https://mapmyvisitors.com/map.png?d=FNuwgesK0Y9tfi6mq_UMfzHqA0GCN5znxkOvVDiMGh4&cl=ffffff" alt="Map showing approximate locations of website visitors" />
-          </a>
+          <iframe
+            className="mapmyvisitors-frame"
+            title="MapMyVisitors visitor map"
+            loading="lazy"
+            sandbox="allow-scripts allow-popups"
+            srcDoc={'<!doctype html><html><head><meta charset="utf-8"><style>html,body{width:200px;height:109px;margin:0;overflow:hidden;background:transparent}body{display:grid;place-items:center}</style></head><body><script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?cl=ffffff&w=200&t=tt&d=FNuwgesK0Y9tfi6mq_UMfzHqA0GCN5znxkOvVDiMGh4&cmo=e5afe0&cmn=e00c81"></script></body></html>'}
+          />
           <p>Powered by MapMyVisitors · Data begins with this integration.</p>
         </div>
       </section>
