@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://table-expressive-therapies-inc.jason-hou.chatgpt.site'),
   title: 'Table Expressive Therapies, Inc. | 臺波波表達性治療',
   description: 'Promoting healing and well-being through expressive arts-based and culturally responsive therapeutic practice.',
+  icons: {
+    icon: [{ url: '/favicon.png', type: 'image/png' }],
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
     title: 'Table Expressive Therapies, Inc. | 臺波波表達性治療',
     description: 'Create · Connect · Be Heard. Expressive arts and culturally responsive community care.',
