@@ -276,7 +276,7 @@ const pageDefaults: PageCopy = {
 };
 
 const curatedSourceUrls = new Set(stories.flatMap((story) => story.sources.map((source) => source.href)));
-const TOTAL_STORIES = 126;
+const TOTAL_STORIES = 127;
 
 function mapArchive(entries: ArchiveEntry[]) {
   return entries
