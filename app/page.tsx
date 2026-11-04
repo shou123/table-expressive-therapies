@@ -276,7 +276,7 @@ const pageDefaults: PageCopy = {
 };
 
 const curatedSourceUrls = new Set(stories.flatMap((story) => story.sources.map((source) => source.href)));
-const TOTAL_STORIES = 127;
+const TOTAL_STORIES = 128;
 
 function mapArchive(entries: ArchiveEntry[]) {
   return entries
@@ -383,7 +383,7 @@ function StoryDialog({ story, children }: { story: Story; children: React.ReactN
           <DialogHeader>
             <p className="kicker">{story.eyebrow}</p>
             <DialogTitle className={titleSizeClass(story.title)}>{story.title}</DialogTitle>
-            <DialogDescription>{story.zh}</DialogDescription>
+            {story.zh !== story.title && <DialogDescription>{story.zh}</DialogDescription>}
           </DialogHeader>
           <div className="dialog-body">{story.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
           {story.sources.length > 0 && <div className="dialog-sources">
@@ -407,7 +407,7 @@ function StoryCard({ story, size = 'regular' }: { story: Story; size?: 'large' |
         </span>
         <span className="story-meta"><span>{story.eyebrow}</span><time>{story.date} · {story.year}</time></span>
         <span className={`story-title ${titleSizeClass(story.title)}`}>{story.title}</span>
-        <span className="story-zh">{story.zh}</span>
+        {story.zh !== story.title && <span className="story-zh">{story.zh}</span>}
         {size !== 'compact' && <span className="story-excerpt">{story.excerpt}</span>}
       </StoryDialog>
     </article>
@@ -607,7 +607,7 @@ export default function Home() {
             <StoryDialog story={story} key={story.slug}>
               <span className="timeline-index">{String(index + 1).padStart(2, '0')}</span>
               <span className="timeline-date">{story.date}<small>{story.year}</small></span>
-              <span className={`timeline-title ${titleSizeClass(story.title)}`}><strong>{story.title}</strong><em>{story.zh}</em></span>
+              <span className={`timeline-title ${titleSizeClass(story.title)}`}><strong>{story.title}</strong>{story.zh !== story.title && <em>{story.zh}</em>}</span>
               <span className={`timeline-dot tone-${story.tone}`}><ArrowUpRight size={18} /></span>
             </StoryDialog>
           ))}

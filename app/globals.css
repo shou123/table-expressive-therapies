@@ -247,6 +247,7 @@ footer h2 { font-size: clamp(46px, 6vw, 84px); }
   .modality i { width: 36px; height: 36px; }
   .story-large .story-image { aspect-ratio: auto; }
   .story-image > img { max-height: 70vh; }
+  .image-orbit { display: none; }
   .feature-grid { gap: 68px; }
   .activity-heading { gap: 12px; margin-bottom: 38px; }
   .activity-poster { padding: 28px 0 38px; border-right: 0; border-bottom: 1px solid var(--line); }
